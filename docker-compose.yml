@@ -1,0 +1,13 @@
+services:
+  frontend:
+    container_name: frontend
+    image: node:latest
+    volumes:
+      - ..:/app
+    ports:
+      - "3000:3000"
+    working_dir: /app/app
+    #command: sh -c "npm install && npm start"
+    #command: npm create vite@latest app -- --template react-ts
+    command: sh -c "npm install && npm run dev && tail -f /dev/null"
+
