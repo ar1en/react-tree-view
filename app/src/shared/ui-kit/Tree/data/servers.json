@@ -1,0 +1,16 @@
+{
+  "value": [
+    {
+      "id": "Cubes_Server_VAV",
+      "name": "Cubes_Server_VAV",
+      "type": "server",
+      "uniqueID": "bb2a1465-ffa9-4fe1-91a9-a5feb47a3c97"
+    },
+    {
+      "id": "A1_Distribution",
+      "name": "A1_Distribution",
+      "type": "server",
+      "uniqueID": "bc978bcb-e6fc-4d90-8b97-8a2230caef1a"
+    }
+  ]
+}

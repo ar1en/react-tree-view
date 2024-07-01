@@ -1,0 +1,14 @@
+.sidebar {
+    width: 400px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: -400px;
+    transition: left 0.3s ease;
+    background-color: #f8f9fa;
+    padding-top: 60px;
+}
+
+.sidebar.open {
+    left: 0;
+}

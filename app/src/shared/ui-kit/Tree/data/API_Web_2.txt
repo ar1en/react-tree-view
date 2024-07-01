@@ -1,0 +1,7 @@
+GET	/cubes/v1/Servers
+
+
+GET /cubes/v1/Servers('A1_Distribution')/Cubes
+
+
+GET /cubes/v1/Servers('A1_Distribution')/Cubes('%D0%9F%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B8')/Views
