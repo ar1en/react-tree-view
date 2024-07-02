@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
-import { TreeNode, TreeProps } from './interfaces.ts';
-import cubes from './data/cubes.json'
-import views from './data/views.json';
-import dummy from './data/dummy.json'
+import React, { useState, useEffect } from 'react';
+import { TreeNode, TreeProps } from './interfaces';
+import { TreeNodeItem } from './TreeNodeItem';
 
-export const Tree: React.FC<TreeProps> = ({ data }) => {
-    const [treeData, setTreeData] = useState<TreeNode[]>(data);
+export const Tree: React.FC<TreeProps> = ({ getInitialData, getChildren, type }) => {
+    const [treeData, setTreeData] = useState<TreeNode[]>([]);
 
-    const toggleChildren = (nodes: TreeNode[], id: string, newChildren?: TreeNode[]): TreeNode[] =>{
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            const initialData = await getInitialData(type);
+            setTreeData(initialData);
+        };
+
+        fetchInitialData();
+    }, [getInitialData, type]);
+
+    const toggleChildren = (nodes: TreeNode[], id: string, newChildren?: TreeNode[]): TreeNode[] => {
         return nodes.map(node =>
             node.id === id
-                ? {...node, children: newChildren, isExpanded: !!newChildren}
-                : {...node, children: node.children ? toggleChildren(node.children, id, newChildren) : node.children}
+                ? { ...node, children: newChildren, isExpanded: !!newChildren }
+                : { ...node, children: node.children ? toggleChildren(node.children, id, newChildren) : node.children }
         );
-    }
+    };
 
     const toggleChildrenHandler = (id: string, newChildren?: TreeNode[]): void =>
         setTreeData(prevData => toggleChildren(prevData, id, newChildren));
 
-    const nodeToggleHandler = (id: string): void => {
+    const nodeToggleHandler = async (id: string): Promise<void> => {
         const node = findNodeById(treeData, id);
 
         if (node && !node.isExpanded) {
-            switch (id) {
-                case 'A1_Distribution':
-                    toggleChildrenHandler(id, cubes.value);
-                    break;
-                case 'Продажи':
-                    toggleChildrenHandler(id, views.value);
-                    break;
-                default:
-                    toggleChildrenHandler(id, dummy.value);
-                    break;
-            }
-        } else if (node && node.isExpanded) toggleChildrenHandler(id);
+            const newChildren = await getChildren(type, id);
+            toggleChildrenHandler(id, newChildren);
+        } else if (node && node.isExpanded) {
+            toggleChildrenHandler(id);
+        }
     };
 
     const findNodeById = (nodes: TreeNode[], id: string): TreeNode | null => {
@@ -51,34 +51,15 @@ export const Tree: React.FC<TreeProps> = ({ data }) => {
     };
 
     const renderTreeNodes = (nodes: TreeNode[], level: number): JSX.Element[] => {
-        return (
-            nodes.map(item => (
-                <li className='list-group-item pt-0 pb-0 rounded-0' key={item.id}>
-                    {level < 2 && item.type != 'dummy' ? (
-                        <details onToggle={(e) => {
-                            e.stopPropagation();
-                            nodeToggleHandler(item.id);
-                        }}>
-                            <summary>{item.name}</summary>
-                            {item.children &&
-                                <ul>
-                                    {renderTreeNodes(item.children, level + 1)}
-                                </ul>
-                            }
-                        </details>
-                    ) : (
-                        <>
-                            <span>{item.name}</span>
-                            {item.children &&
-                                <ul>
-                                    {renderTreeNodes(item.children, level + 1)}
-                                </ul>
-                            }
-                        </>
-                    )}
-                </li>
-            ))
-        )
+        return nodes.map(item => (
+            <TreeNodeItem
+                key={item.id}
+                node={item}
+                level={level}
+                onToggle={nodeToggleHandler}
+                renderTreeNodes={renderTreeNodes}
+            />
+        ));
     };
 
     return (

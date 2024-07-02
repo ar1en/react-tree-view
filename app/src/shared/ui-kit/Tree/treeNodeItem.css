@@ -1,0 +1,13 @@
+.tree-node {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1.3s ease;
+}
+
+.tree-node.collapsed {
+    max-height: 0;
+}
+
+.tree-node.expanded {
+    max-height: 1000px;
+}

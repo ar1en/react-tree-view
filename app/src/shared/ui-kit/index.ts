@@ -2,10 +2,13 @@
 
 //Tree
 export {Tree} from "./Tree";
-export type {TreeNode} from './Tree'
+export type {TreeNode} from './Tree';
 
 //TopMenu
-export {TopMenu} from './TopMenu/topMenu.tsx'
+export {TopMenu} from './TopMenu/topMenu.tsx';
 
 //Sidebar
-export {Sidebar} from './Sidebar/sidebar.tsx'
+export {Sidebar} from './Sidebar/sidebar.tsx';
+
+//Icons
+export {Icon} from './Icons/icons.tsx';

@@ -2,7 +2,7 @@
   "value": [
     {
       "id": "dummy",
-      "name": "Пусто",
+      "name": "<пусто>",
       "type": "dummy",
       "uniqueID": "dummy"
     }

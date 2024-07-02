@@ -1,8 +1,7 @@
 import {useState} from "react";
-import {Tree, TreeNode, TopMenu, Sidebar} from "./shared/ui-kit";
+import {Tree, TopMenu, Sidebar} from "./shared/ui-kit";
+import {someDataService} from "./entities";
 import 'bootstrap/dist/css/bootstrap.min.css'
-
-import servers from './shared/ui-kit/Tree/data/servers.json';
 
 const App = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -10,14 +9,15 @@ const App = () => {
     const toggleSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
-    const serversData: TreeNode[] = servers.value;
 
     return (
         <>
             <TopMenu toggleSidebar={toggleSidebar} />
             <Sidebar isOpen={sidebarOpen}>
                 <div className='p-2'>
-                    <Tree data={serversData}/>
+                    <Tree type={"servers"}
+                          getInitialData={someDataService.fetchNode}
+                          getChildren={someDataService.getChildren}/>
                 </div>
             </Sidebar>
         </>
