@@ -2,28 +2,34 @@ import React from 'react';
 import {Icon} from "../index.ts";
 import {ToggleProps} from "./interfaces.ts";
 
-
 export const Toggle: React.FC<ToggleProps> = ({ isExpanded, onClick, level, name, type }) => {
-    const l0_1 = <Icon id='model' width="25px" height="25px"/>;
-    const l0_2 = <Icon id='model' width="25px" height="25px" color="blue"/>;
+    const serverIcon = <Icon id='model' width="25px" height="25px" color="blue"/>
+    const cubeIcon = <Icon id='cube' width="25px" height="25px" color="blue"/>;
+    const viewIcon = <Icon id='view' width="25px" height="25px" color="blue"/>;
+    const expandIcon = <Icon id='expand' width="25px" height="25px"/>;
+    const collapseIcon = <Icon id='collapse' width="25px" height="25px" color="blue"/>;
+    const dummyIcon = <Icon id='dummy' width="25px" height="25px"/>;
 
-    const l1_1 = <Icon id='cube' width="25px" height="25px"/>;
-    const l1_2 = <Icon id='cube' width="25px" height="25px" color="blue"/>;
-
-    const l2_1 = <Icon id='view' width="25px" height="25px"/>;
-    const l2_2 = <Icon id='view' width="25px" height="25px" color="blue"/>;
-
-    const getIcon = () => {
-        if (level === 0) return isExpanded ? l0_2 : l0_1;
-        if (level === 1) return isExpanded ? l1_2 : l1_1;
-        if (level === 2) return isExpanded ? l2_2 : l2_1;
-        return isExpanded ? '+' : '-';
+    const getActionIcon = () => {
+        if (type === "dummy" || level > 1) return dummyIcon;
+        return isExpanded ? collapseIcon : expandIcon;
     };
+
+    const getTypeIcon = () => {
+        switch (type){
+            case 'server':
+                return serverIcon;
+            case 'cube':
+                return cubeIcon;
+            case 'view':
+                return viewIcon;
+        }
+    }
 
     return (
         <div onClick={(type === "dummy") || (level > 1) ? undefined : onClick}
              className="d-flex align-items-center pointer-event">
-            <span className="me-2">{getIcon()}</span>
+            <span className="me-2">{getActionIcon()} {getTypeIcon()}</span>
             {name}
         </div>
     );
